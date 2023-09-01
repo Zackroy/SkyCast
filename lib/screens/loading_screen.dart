@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
+import 'location_screen.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:skycast/services/weather.dart';
+
+
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -7,40 +11,30 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  void getLocation() async {
-    LocationPermission permission;
-    permission = await Geolocator.requestPermission();
-    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.low);
-    print(position); // Debug print
-
-    // LocationPermission permission = await Geolocator.requestPermission();
-    //
-    // if (permission == LocationPermission.deniedForever) {
-    //   // Handle denied forever case
-    //   print('Location permission denied forever');
-    // } else if (permission == LocationPermission.denied) {
-    //   // Handle denied case
-    //   print('Location permission denied');
-    // } else {
-    //   Position position = await Geolocator.getCurrentPosition(
-    //     desiredAccuracy: LocationAccuracy.low,
-    //   );
-    //   print(position);
-    // }
-  }
 
   @override
+  void initState() {
+    super.initState();
+    getLocationData();
+  }
+
+  void getLocationData() async {
+
+    var weatherData = await WeatherModel().getLocationWeather();
+    // print(weatherData);
+    Navigator.push(context, MaterialPageRoute(builder: (context){
+      return LocationScreen(locationWeather: weatherData);
+    }));
+  }
+  @override
   Widget build(BuildContext context) {
+    // getData();
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            print("Button pressed"); // Debug print
-            getLocation(); // Request permission when button is pressed
-          },
-          child: Text('Get Location'),
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100.0,
         ),
-      ),
-    );
+      ),);
   }
 }
