@@ -1,7 +1,7 @@
 import 'package:skycast/services/location.dart';
 import 'package:skycast/services/networking.dart';
 
-const apiKey = "5fb5e4c94f5516ba88f78c44c46ddd4e";
+const apiKey = "";
 const openWeatherMapUrl = "https://api.openweathermap.org/data/2.5/weather";
 
 class WeatherModel {
